@@ -36,15 +36,11 @@ namespace RhubarbGeekNz.Guido
             }
             else
             {
-                if (Encoding == null)
-                {
-                    Encoding = System.Text.Encoding.UTF8;
-                }
+                System.Text.Encoding enc = Encoding == null ? System.Text.Encoding.UTF8 : Encoding;
 
-                valueBytes = Encoding.GetBytes(Value.ToString());
+                valueBytes = enc.GetBytes(Value.ToString());
             }
 
-            if (Encoding == null) Encoding = System.Text.Encoding.UTF8;
             byte[] namespaceBytes = Namespace.ToByteArray();
             Array.Reverse(namespaceBytes, 0, 4);
             Array.Reverse(namespaceBytes, 4, 2);
@@ -55,7 +51,7 @@ namespace RhubarbGeekNz.Guido
             byte[] hash = SHA1.Create().ComputeHash(buffer);
             byte[] guidBytes = new byte[16];
             Array.Copy(hash, guidBytes, guidBytes.Length);
-            guidBytes[6] =(byte)((guidBytes[6] & 0xF) | 0x50);
+            guidBytes[6] = (byte)((guidBytes[6] & 0xF) | 0x50);
             guidBytes[8] = (byte)((guidBytes[8] & 0x3F) | 0x80);
             Array.Reverse(guidBytes, 0, 4);
             Array.Reverse(guidBytes, 4, 2);
